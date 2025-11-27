@@ -1,7 +1,7 @@
 {
-  "json_file": "../res/linuxvps.json",
-  "log_file": "../log/logfile.log",
+  "json_file": "res/linuxvps.json",
+  "log_file": "log/logfile.log",
   "ssh_password": "jooouda",
-  "threads": 10,
+  "threads": 20,
   "commands": ["uptime", "date"]
 }

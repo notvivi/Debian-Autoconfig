@@ -12,8 +12,8 @@ from lib.resource_path import resource_path
 
 
 try:
-    config_path = resource_path("config.json")
-    with open(config_path, "r") as f:
+    config_path = resource_path("src/config.json")
+    with open(config_path, "r" ,encoding="utf-8") as f:
         config = json.load(f)
 except FileNotFoundError:
     print("Config file not found.")
@@ -23,8 +23,8 @@ except json.JSONDecodeError as e:
     exit(1)
 
 
-json_file = config.get("json_file", "../res/linuxvps.json")
-log_file = config.get("log_file", "../log/logfile.log")
+json_file = resource_path(config.get("json_file", "res/linuxvps.json"))
+log_file =  resource_path(config.get("log_file", "log/logfile.log"))
 raw_password = config.get("ssh_password", "heslo1213")
 thread_count = config.get("threads", 20)
 commands = config.get("commands", ["uptime", "date"])

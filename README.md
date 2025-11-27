@@ -8,6 +8,7 @@ This python script is about autoconfiguring linux servers via ssh
 ## How to download pyinstaller
 1. Open terminal
 2. Copy `pip install pyinstaller` and paste it into terminal, press enter
+3. Copy `pip install paramiko` and paste it into terminal, press enter
 
 ## How to set up configuration file
 - The password `must be the same` for all linux vps
@@ -16,7 +17,7 @@ This python script is about autoconfiguring linux servers via ssh
 
 ## How to START
 1. After setting up everything, open terminal
-2. Copy `pyinstaller --onefile --add-data "src/config.json;." --add-data "lib;lib" src/main.py"` and paste it into terminal, press enter
+2. Copy `pyinstaller --onefile --add-data "src/config.json;src" --add-data "lib;lib" --add-data "res;res" --add-data "log;log" src/main.py"` and paste it into terminal, press enter
 3. In file explorer go into `dist` and run `main.exe` 
 4. Enjoy
 
