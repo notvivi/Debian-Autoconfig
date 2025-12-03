@@ -2,7 +2,7 @@
 This python script is about autoconfiguring linux servers via ssh
 
 ## Requirements
-- python 3.2.0 and more
+- python 3.10.0 and more
 - pyinstaller
 
 ## How to download pyinstaller
