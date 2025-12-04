@@ -23,7 +23,7 @@ except json.JSONDecodeError as e:
     exit(1)
 
 
-json_file = resource_path(config.get("linux_vpss_file", "res/linuxvps.json"))
+linux_vpss_file = resource_path(config.get("linux_vpss_file", "res/linuxvps.json"))
 log_file =  resource_path(config.get("log_file", "log/logfile.log"))
 raw_password = config.get("ssh_password", "heslo1213")
 thread_count = config.get("threads", 20)
@@ -51,7 +51,7 @@ def update_status(port, new_status):
     :return: Nothing
     """
     with lock:
-        with open(json_file, "r") as f:
+        with open(linux_vpss_file, "r") as f:
             data = json.load(f)
 
         for server in data["servers"]:
@@ -59,7 +59,7 @@ def update_status(port, new_status):
                 server["status"] = new_status
                 break
 
-        with open(json_file, "w") as f:
+        with open(linux_vpss_file, "w") as f:
             json.dump(data, f, indent=2)
 
 def main_loop(linuxvpss):
@@ -124,23 +124,23 @@ def configure_linux(linuxvps):
 
 
 if __name__ == "__main__":
-    if isinstance(json_file, str) and isinstance(log_file, str):
+    if isinstance(linux_vpss_file, str) and isinstance(log_file, str):
         try:
             logging.basicConfig(level=logging.ERROR, filename=log_file, filemode='w',
                             format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         except FileNotFoundError:
             print(f"Error: Log file not found: {log_file}")
         try:
-            with open(json_file) as f:
+            with open(linux_vpss_file) as f:
                 jsondata = json.load(f)
                 linuxvpss = [LinuxVps(linuxvps["host"], linuxvps["port"], linuxvps["user"], linuxvps["status"], linuxvps["password_hash"]) for linuxvps in jsondata["servers"]]
                 main_loop(linuxvpss)
         except FileNotFoundError:
-            print(f"Error: JSON file not found: {json_file}")
-            logging.error(f"JSON file not found: {json_file}")
+            print(f"Error: JSON file not found: {linux_vpss_file}")
+            logging.error(f"JSON file not found: {linux_vpss_file}")
         except json.JSONDecodeError as e:
-            logging.error(f"Error decoding JSON file {json_file}: {e}")
-            print(f"Error: JSON file is invalid: {json_file}")
+            logging.error(f"Error decoding JSON file {linux_vpss_file}: {e}")
+            print(f"Error: JSON file is invalid: {linux_vpss_file}")
         finally:
             input("Press Enter to exit...")
     else:
