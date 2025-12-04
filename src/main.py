@@ -23,7 +23,7 @@ except json.JSONDecodeError as e:
     exit(1)
 
 
-json_file = resource_path(config.get("json_file", "res/linuxvps.json"))
+json_file = resource_path(config.get("linux_vpss_file", "res/linuxvps.json"))
 log_file =  resource_path(config.get("log_file", "log/logfile.log"))
 raw_password = config.get("ssh_password", "heslo1213")
 thread_count = config.get("threads", 20)

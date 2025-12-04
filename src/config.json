@@ -1,5 +1,5 @@
 {
-  "json_file": "res/linuxvps.json",
+  "linux_vpss_file": "res/linuxvps.json",
   "log_file": "log/logfile.log",
   "ssh_password": "jooouda",
   "threads": 20,
