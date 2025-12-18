@@ -1,3 +1,7 @@
+# Author: Vilma Tomanová
+# Date finished: 2025-18-12
+# Description: Script for creating and starting UI and using main.py.
+
 import tkinter as tk
 from tkinter import filedialog
 import subprocess
@@ -16,16 +20,22 @@ sys.path.insert(0, os.path.join(base_path, "lib"))
 
 import resource_path
 
-
 def run_script():
+    """
+    Runs the whole UI.
+    :return: None
+    """
     write_into_config()
     run_button.config(state="disabled")
     threading.Thread(target=run_main_process).start()
 
 
 def run_main_process():
+    """
+    :return:
+    """
     exe_path = sys.executable
-    safe_write_output(f"Running worker process...\n")
+    safe_write_output(f"Running process...\n")
 
     try:
         env = os.environ.copy()
@@ -85,10 +95,10 @@ def select_vps_file():
         vps_file_path.set(path)
 
 root = tk.Tk()
-root.title("Will add later")
+root.title("Debian VPS Autoconfiguration")
 root.geometry("500x500")
 
-tk.Label(root, text="Password").pack(pady=5)
+tk.Label(root, text="Password (That is used on linux servers.)").pack(pady=5)
 password_entry = tk.Entry(root, show="*", width=30)
 password_entry.pack()
 
@@ -99,12 +109,12 @@ threads_entry.pack()
 log_file_path = tk.StringVar()
 tk.Label(root, text="LOG file").pack(pady=5)
 tk.Entry(root, textvariable=log_file_path, width=45).pack()
-tk.Button(root, text="Vybrat LOG soubor", command=select_log_file).pack(pady=5)
+tk.Button(root, text="Vybrat soubor", command=select_log_file).pack(pady=5)
 
 vps_file_path = tk.StringVar()
-tk.Label(root, text="VPS file").pack(pady=5)
+tk.Label(root, text="Debian VPS file").pack(pady=5)
 tk.Entry(root, textvariable=vps_file_path, width=45).pack()
-tk.Button(root, text="Vybrat VPS soubor", command=select_vps_file).pack(pady=5)
+tk.Button(root, text="Vybrat soubor", command=select_vps_file).pack(pady=5)
 
 
 run_button = tk.Button(root, text="Run script", command=run_script)

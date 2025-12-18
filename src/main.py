@@ -11,14 +11,12 @@ import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
 try:
-    base_path = sys._MEIPASS  # PyInstaller temporary folder
+    base_path = sys._MEIPASS
 except AttributeError:
     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-# Add lib folder to sys.path
 sys.path.insert(0, os.path.join(base_path, "lib"))
 
-# Now import resource_path
 import resource_path
 
 
@@ -156,8 +154,6 @@ def run_main_logic():
         except json.JSONDecodeError as e:
             logging.error(f"Error decoding JSON file {linux_vpss_file}: {e}")
             print(f"Error: JSON file is invalid: {linux_vpss_file}")
-        #finally:
-            #input("Press Enter to exit...")
     else:
         print("Error: Couldnt find json file or log file")
 
