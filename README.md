@@ -18,7 +18,7 @@ This python script is about autoconfiguring debian virtual private servers via s
 
 ## How to START
 1. After setting up everything, open terminal
-2. Copy `pyinstaller --onefile --add-data "src/config.json;src" --add-data "lib;lib" --add-data "res;res" --add-data "log;log" src/main.py"` and paste it into terminal, press enter
+2. Copy `pyinstaller --onefile --paths "lib" --add-data "src/config.json;src" --add-data "lib;lib" --add-data "res;res" --add-data "log;log" "src/main.py"` and paste it into terminal, press enter
 3. In file explorer, find dist folder and run `main.exe`
 4. Enjoy
 
