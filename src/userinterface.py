@@ -6,8 +6,14 @@ import json
 import os
 import threading
 import time
-lib_path = sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "lib")))
-sys.path.append(lib_path)
+import main
+try:
+    base_path = sys._MEIPASS
+except AttributeError:
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+sys.path.insert(0, os.path.join(base_path, "lib"))
+
 import resource_path
 
 
@@ -16,30 +22,33 @@ def run_script():
     run_button.config(state="disabled")
     threading.Thread(target=run_main_process).start()
 
+
 def run_main_process():
-    main_path = resource_path.resource_path("src/main.py")
-    working_dir = os.path.dirname(main_path)
-    safe_write_output(f"Running: {main_path}\n")
+    exe_path = sys.executable
+    safe_write_output(f"Running worker process...\n")
+
     try:
+        env = os.environ.copy()
+        env["IS_WORKER_PROCESS"] = "true"
+
         process = subprocess.Popen(
-            [sys.executable, main_path],
+            [exe_path],
             stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
+            stderr=subprocess.PIPE,
             universal_newlines=True,
-            cwd=working_dir
+            env=env,
         )
 
         while True:
-            line = process.stdout.readline()
-            if line:
-                safe_write_output(line)
-            elif process.poll() is not None:
+            output = process.stdout.readline()
+            err = process.stderr.readline()
+            if output: safe_write_output(output)
+            if err: safe_write_output("[ERROR] " + err)
+            if process.poll() is not None:
                 break
             else:
                 time.sleep(0.05)
 
-        process.stdout.close()
-        process.wait()
         safe_write_output("\nProcess finished.\n")
         root.after(0, lambda: run_button.config(state="normal"))
     except Exception as e:
@@ -117,4 +126,11 @@ def write_output(text):
 def safe_write_output(text):
     root.after(0, lambda: write_output(text))
 
-root.mainloop()
+if __name__ == "__main__":
+    if os.environ.get("IS_WORKER_PROCESS") == "true":
+        try:
+            main.run_main_logic()
+        except Exception as e:
+            print(f"Worker Error: {e}")
+    else:
+        root.mainloop()

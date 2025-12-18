@@ -10,8 +10,15 @@ import logging
 import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
-lib_path = sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "lib")))
-sys.path.append(lib_path)
+try:
+    base_path = sys._MEIPASS  # PyInstaller temporary folder
+except AttributeError:
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# Add lib folder to sys.path
+sys.path.insert(0, os.path.join(base_path, "lib"))
+
+# Now import resource_path
 import resource_path
 
 
@@ -131,7 +138,7 @@ def configure_linux(linuxvps):
         logging.error(f"Failed to connect to {linuxvps.port}: {e}")
 
 
-if __name__ == "__main__":
+def run_main_logic():
     if isinstance(linux_vpss_file, str) and isinstance(log_file, str):
         try:
             logging.basicConfig(level=logging.ERROR, filename=log_file, filemode='w',
@@ -153,3 +160,6 @@ if __name__ == "__main__":
             #input("Press Enter to exit...")
     else:
         print("Error: Couldnt find json file or log file")
+
+if __name__ == "__main__":
+    run_worker_logic()
